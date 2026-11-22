@@ -3,11 +3,16 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X, ArrowUpRight, LogOut, User } from 'lucide-react';
+import { authClient, useSession } from '@/lib/auth-client';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
+    
     const [isOpen, setIsOpen] = useState(false);
-
+    const { data: session, isPending } = useSession();
+const router=useRouter()
     const navLinks = [
         { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
@@ -15,8 +20,17 @@ const Navbar = () => {
         { name: 'How It Works', href: '/how-it-works' },
     ];
 
+    const handleSignOut = async () => {
+        await authClient.signOut();
+        setIsOpen(false);
+        router.refresh()
+    };
+
+    const user = session?.user;
+
     return (
         <header className="sticky top-0 z-50 w-full border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
+
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
 
                 {/* Logo */}
@@ -43,18 +57,55 @@ const Navbar = () => {
                     ))}
                 </div>
 
-                {/* Desktop Sign In */}
-                <div className="hidden md:block">
-                    <Link
-                        href="/sign-in"
-                        className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-300"
-                    >
-                        Sign In
-                        <ArrowUpRight
-                            size={16}
-                            className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                        />
-                    </Link>
+                {/* Desktop Authentication */}
+                <div className="hidden items-center gap-4 md:flex">
+
+                    {isPending ? (
+                        <span className="loading loading-spinner loading-sm text-blue-600"></span>
+                    ) : user ? (
+                        <>
+                            <div className="flex items-center gap-3">
+                                <Avatar className="h-10 w-10 border-2 border-blue-100">
+                                    <AvatarImage src={user.image || ''} />
+                                    <AvatarFallback className="bg-blue-100 font-bold text-blue-700">
+                                        {user.name?.charAt(0)?.toUpperCase() || 'U'}
+                                    </AvatarFallback>
+                                </Avatar>
+
+                                <span className="text-sm font-semibold text-slate-700">
+                                    Welcome, {user.name}
+                                </span>
+                            </div>
+
+                            <button
+                                onClick={handleSignOut}
+                                className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                            >
+                                <LogOut size={16} />
+                                Sign Out
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                href="/sign-up"
+                                className="text-sm font-semibold text-slate-600 transition-colors hover:text-blue-600"
+                            >
+                                Sign Up
+                            </Link>
+
+                            <Link
+                                href="/sign-in"
+                                className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-blue-200 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-300"
+                            >
+                                Sign In
+                                <ArrowUpRight
+                                    size={16}
+                                    className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                                />
+                            </Link>
+                        </>
+                    )}
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -66,12 +117,15 @@ const Navbar = () => {
                 >
                     {isOpen ? <X size={23} /> : <Menu size={23} />}
                 </button>
+
             </nav>
 
             {/* Mobile Dropdown */}
             {isOpen && (
                 <div className="border-t border-slate-100 bg-white px-5 py-4 shadow-xl md:hidden">
+
                     <div className="flex flex-col gap-1">
+
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
@@ -84,18 +138,70 @@ const Navbar = () => {
                         ))}
 
                         <div className="mt-3 border-t border-slate-100 pt-4">
-                            <Link
-                                href="/sign-in"
-                                onClick={() => setIsOpen(false)}
-                                className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 font-semibold text-white shadow-md shadow-blue-200"
-                            >
-                                Sign In
-                                <ArrowUpRight size={17} />
-                            </Link>
+
+                            {isPending ? (
+                                <div className="flex justify-center py-3">
+                                    <span className="loading loading-spinner loading-sm text-blue-600"></span>
+                                </div>
+                            ) : user ? (
+                                <div className="flex flex-col gap-4">
+
+                                    <div className="flex items-center gap-3 px-3">
+                                        <Avatar className="h-10 w-10 border-2 border-blue-100">
+                                            <AvatarImage src={user.image || ''} />
+                                            <AvatarFallback className="bg-blue-100 font-bold text-blue-700">
+                                                {user.name?.charAt(0)?.toUpperCase() || 'U'}
+                                            </AvatarFallback>
+                                        </Avatar>
+
+                                        <div>
+                                            <p className="text-sm font-bold text-slate-800">
+                                                Welcome, {user.name}
+                                            </p>
+                                            <p className="text-xs text-slate-500">
+                                                {user.email}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={handleSignOut}
+                                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 px-5 py-3 font-semibold text-red-600 transition-colors hover:bg-red-50"
+                                    >
+                                        <LogOut size={17} />
+                                        Sign Out
+                                    </button>
+
+                                </div>
+                            ) : (
+                                <div className="flex flex-col gap-3">
+
+                                    <Link
+                                        href="/sign-up"
+                                        onClick={() => setIsOpen(false)}
+                                        className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-5 py-3 font-semibold text-slate-700 hover:bg-slate-50"
+                                    >
+                                        <User size={17} />
+                                        Sign Up
+                                    </Link>
+
+                                    <Link
+                                        href="/sign-in"
+                                        onClick={() => setIsOpen(false)}
+                                        className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 font-semibold text-white shadow-md shadow-blue-200"
+                                    >
+                                        Sign In
+                                        <ArrowUpRight size={17} />
+                                    </Link>
+
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </div>
             )}
+
         </header>
     );
 };
