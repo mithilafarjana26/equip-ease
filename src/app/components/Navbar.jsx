@@ -64,6 +64,7 @@ const router=useRouter()
                         <span className="loading loading-spinner loading-sm text-blue-600"></span>
                     ) : user ? (
                         <>
+                        <Link  href={`/dashboard/${session?.user?.role}`}>Dashboard</Link>
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-10 w-10 border-2 border-blue-100">
                                     <AvatarImage src={user.image || ''} />
