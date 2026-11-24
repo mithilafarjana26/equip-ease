@@ -110,10 +110,10 @@ const AllCategories = () => {
                                     scale: 1.03,
                                 }}
                             >
-                                <Link
-                                    href={`/all-equipment?category=${encodeURIComponent(category.name)}`}
-                                    className="group flex min-h-36 flex-col items-center justify-center gap-4 rounded-2xl border border-slate-100 bg-white p-4 text-center shadow-sm transition-all duration-300 hover:border-blue-200 hover:shadow-lg"
-                                >
+                               <Link
+    href={`/all-equipment?category=${encodeURIComponent(category.name.toLowerCase())}`}
+    className="group flex min-h-36 flex-col items-center justify-center gap-4 rounded-2xl border border-slate-100 bg-white p-4 text-center shadow-sm transition-all duration-300 hover:border-blue-200 hover:shadow-lg"
+>
                                     <div className={`${category.color} ${category.iconColor} flex h-14 w-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110`}>
                                         <Icon size={27} strokeWidth={1.8} />
                                     </div>

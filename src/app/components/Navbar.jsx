@@ -17,7 +17,7 @@ const router=useRouter()
         { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
         { name: 'Contact', href: '/contact' },
-        { name: 'How It Works', href: '/how-it-works' },
+        { name: 'How It Works', href: '/all-equipment' },
     ];
 
     const handleSignOut = async () => {
