@@ -9,6 +9,7 @@ import {
     MapPin,
     Package
 } from 'lucide-react';
+import DeleteCategoryDialog from '@/app/components/DeleteCategoryDialog';
 const ManageEquipmentTable = async() => {
       const equipment = await getCategories()
         console.log(equipment,'result')
@@ -183,7 +184,8 @@ const ManageEquipmentTable = async() => {
                                                 title="Delete Equipment"
                                                 className="p-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"
                                             >
-                                                <Trash2 size={17} />
+                                               
+                                               <DeleteCategoryDialog item={item}></DeleteCategoryDialog>
                                             </button>
 
                                         </div>

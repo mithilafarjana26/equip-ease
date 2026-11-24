@@ -3,7 +3,7 @@ import { getCategories } from '@/lib/action/equipment';
 import React from 'react';
 import CategorySearchBar from '../components/CategorySearchBar';
 import CategoryFilter from '../components/CategoryFilter';
-import CategoryCard from '../components/CategoryCard';
+import CategoryList from '../components/CategoryList ';
 
 const BrowseCategory = async ({ searchParams }) => {
 
@@ -47,28 +47,7 @@ const BrowseCategory = async ({ searchParams }) => {
                         </div>
 
                         {/* Equipment Cards */}
-                        <div className="flex flex-col gap-4">
-
-                            {result.length > 0 ? (
-                                result.map((category) => (
-                                    <CategoryCard
-                                        key={category._id}
-                                        category={category}
-                                    />
-                                ))
-                            ) : (
-                                <div className="bg-white rounded-2xl border p-10 text-center">
-                                    <h2 className="text-lg font-semibold text-gray-700">
-                                        No Equipment Found
-                                    </h2>
-
-                                    <p className="text-sm text-gray-500 mt-2">
-                                        Try changing your search or filters.
-                                    </p>
-                                </div>
-                            )}
-
-                        </div>
+                        <CategoryList result={result} />
 
                     </main>
 

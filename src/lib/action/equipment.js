@@ -25,3 +25,11 @@ export const getOneCategory = async(categoriesId)=>{
     const res=await fetch(`${BASE_URL}/categories/${categoriesId}`)
     return res.json()
 }
+
+//delete jobs api
+export const deleteCategory = async(id)=>{
+    const res = await fetch(`${BASE_URL}/categories/${id}`,{
+        method:"DELETE",
+    })
+    return res.json()
+}
