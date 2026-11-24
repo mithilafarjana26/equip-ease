@@ -67,7 +67,7 @@ const menuItemsByRole = {
         },
         {
             name: "My Equipment",
-            url: "/dashboard/manager/equipment",
+            url: "/dashboard/manager/equipments",
             icon: Package,
         },
         {
