@@ -33,3 +33,23 @@ export const deleteCategory = async(id)=>{
     })
     return res.json()
 }
+
+//applications post
+
+export const createApplication = async(data) =>{
+    const res = await fetch(`${BASE_URL}/application`,{
+         method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(data),
+    })
+    return res.json()
+}
+
+//get application by users
+
+export const  getApplication = async(query = '') =>{
+    const res = await fetch(`${BASE_URL}/application?${query}`)
+    return res.json()
+}
