@@ -39,7 +39,7 @@ const menuItemsByRole = {
         },
         {
             name: "My Rentals",
-            url: "/dashboard/customer/rentals",
+            url: "/dashboard/customer/applications",
             icon: ClipboardList,
         },
         {
