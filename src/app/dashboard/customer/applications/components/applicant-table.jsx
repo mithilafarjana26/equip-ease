@@ -1,5 +1,7 @@
 
+import { Trash2 } from "lucide-react";
 import React from "react";
+import DeleteDialog from "./delete-dialog";
 
 const ApplicantTable = ({ application }) => {
     const {
@@ -83,6 +85,11 @@ const ApplicantTable = ({ application }) => {
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                     {status}
                 </span>
+            </td>
+            {/* actions */}
+              
+            <td className="px-6 py-4 text-sm text-gray-600 whitespace-nowrap">
+               <DeleteDialog item={application}></DeleteDialog>
             </td>
 
         </tr>

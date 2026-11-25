@@ -53,3 +53,17 @@ export const  getApplication = async(query = '') =>{
     const res = await fetch(`${BASE_URL}/application?${query}`)
     return res.json()
 }
+
+//delete application api
+export const deleteApplicant = async(id)=>{
+    const res = await fetch(`${BASE_URL}/application/${id}`,{
+        method:"DELETE",
+    })
+    return res.json()
+}
+
+//count
+export const  getApplicationCount = async(query = '') =>{
+    const res = await fetch(`${BASE_URL}/application/count?${query}`)
+    return res.json()
+}

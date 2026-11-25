@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
-import { createApplication } from "@/lib/action/equipment";
+import { createApplication, getApplicationCount } from "@/lib/action/equipment";
 
 const CardDetails = ({ equipment }) => {
      const {data:session,isPending} = useSession()
@@ -54,12 +54,22 @@ const CardDetails = ({ equipment }) => {
 
 const handleBook = async() =>{
  if(!session?.user){
-    router.push('/')
+    router.push(`/sign-in?redirectTo=/browse-category/${equipment._id}`)
     return
 }
 
 else if(session?.user?.role==='customer'){
-    const application = {
+            const countResult = await getApplicationCount(`applicantId=${session?.user.id}`)
+
+
+            if(countResult.count>=3){
+ router.push('/dashboard/customer/payment')
+    return
+}
+
+
+    else{
+        const application = {
 
 
     categoryId: equipment._id,
@@ -88,6 +98,7 @@ else if(session?.user?.role==='customer'){
 console.log('application',application)
      const res = await createApplication(application)
     console.log(res)
+    }
 }
 
 

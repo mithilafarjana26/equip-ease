@@ -63,6 +63,7 @@ const MyRentalPage = async () => {
                                     <th className="px-6 py-4 font-semibold">Duration</th>
                                     <th className="px-6 py-4 font-semibold">Delivery</th>
                                     <th className="px-6 py-4 font-semibold">Status</th>
+                                    <th className="px-6 py-4 font-semibold">Actions</th>
                                 </tr>
                             </thead>
 
